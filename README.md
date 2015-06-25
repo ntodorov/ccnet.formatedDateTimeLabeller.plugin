@@ -17,6 +17,7 @@ monthFormat could be M or MM
 dayFormat could be d or dd
 revisionFormat could be any zero's 0 or 000 or 00000 and etc.
 revision will be the last quadrant of the version and it will be restarted every day or if you change the one of the formats of the Labeller 
+v.1.1 - new property resetRevision = true - if you set it to false it will ignore the date change and will continuously increment the revision.
 
 
 ##Installation

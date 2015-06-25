@@ -59,6 +59,7 @@ namespace ccnet.formatedDateTimeLabeller.plugin
             this.DayFormat = "dd";
             RevisionFormat = "000";
             IncrementOnFailed = false;
+            ResetRevision = true;
         }
 
         public formatedDateTimeLabeller()
@@ -145,6 +146,15 @@ namespace ccnet.formatedDateTimeLabeller.plugin
 		[ReflectorProperty("incrementOnFailure", Required = false)]
 		public bool IncrementOnFailed { get; set; }
 
+        /// <summary>
+        /// Determines if the RevisionNumber should be reset to 1 every day.
+        /// 
+        /// </summary>
+        /// <version>1.0</version>
+        /// <default>true</default>
+        [ReflectorProperty("resetRevision", Required = false)]
+        public bool ResetRevision { get; set; }
+
 
         public void Run(IIntegrationResult result)
         {
@@ -167,14 +177,20 @@ namespace ccnet.formatedDateTimeLabeller.plugin
 
 
 			int revision = version.Revision;
-            if ((newVersion.Major == version.Major && newVersion.Minor == version.Minor && newVersion.Build == version.Build))
-			{
-				revision += 1;
-			}
-			else
-			{
-				revision = 1;
-			}
+
+            if (ResetRevision)
+            {
+                if ((newVersion.Major == version.Major && newVersion.Minor == version.Minor && newVersion.Build == version.Build))
+                {
+                    revision += 1;
+                }
+                else
+                {
+                    revision = 1;
+                }
+            }
+            else revision += 1;
+
             return string.Format(CultureInfo.CurrentCulture,"{0}.{1}.{2}.{3}",
                    now.ToString(YearFormat, CultureInfo.CurrentCulture), 
                    now.ToString(MonthFormat, CultureInfo.CurrentCulture), 
